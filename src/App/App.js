@@ -21,7 +21,9 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <h2 className="h4">
-            React Full-screen Morph Button
+            <a href="https://github.com/mnishiguchi/react-full-screen-morph-button">
+              React Full-screen Morph Button
+            </a>
           </h2>
         </div>
 

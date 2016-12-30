@@ -3,7 +3,7 @@
 import classie from 'classie'
 
 const defaultOptions = {
-    closeEl      : '',
+    closeSelector: '',
     onBeforeOpen : () => { return false },
     onAfterOpen  : () => { return false },
     onBeforeClose: () => { return false },
@@ -36,8 +36,8 @@ class UIMorphingButton {
       })
 
       // close
-      if (this.options.closeEl !== '') {
-          const closeEl = this.el.querySelector(this.options.closeEl)
+      if (this.options.closeSelector !== '') {
+          const closeEl = this.el.querySelector(this.options.closeSelector)
           if (closeEl) {
               closeEl.addEventListener('click', () => {
                   this.toggle()
@@ -47,8 +47,8 @@ class UIMorphingButton {
 
       document.onkeydown = function(evt) {
           evt = evt || window.event
-          if (this.options.closeEl !== '') {
-              const closeEl = this.el.querySelector(this.options.closeEl)
+          if (this.options.closeSelector !== '') {
+              const closeEl = this.el.querySelector(this.options.closeSelector)
 
               if (closeEl && this.expanded) {
                   this.toggle()
@@ -63,6 +63,7 @@ class UIMorphingButton {
   // ---
 
 
+  // TODO: Understand this code
   toggle() {
       if (this.isAnimating) return false
 
@@ -82,14 +83,17 @@ class UIMorphingButton {
       const onEndTransitionFn = function(ev) {
           if (ev.target !== this) return false
 
-          // open: first opacity then width/height/left/top
+          // open:  first opacity then width/height/left/top
           // close: first width/height/left/top then opacity
-          if (self.expanded && ev.propertyName !== 'opacity' || !self.expanded && ev.propertyName !== 'width' && ev.propertyName !== 'height' && ev.propertyName !== 'left' && ev.propertyName !== 'top') {
-              return false
-          }
+          const opacityConds  = ev.propertyName !== 'opacity'
+          const otherConds    = (ev.propertyName !== 'width') &&
+                                (ev.propertyName !== 'height') &&
+                                (ev.propertyName !== 'left') &&
+                                (ev.propertyName !== 'top')
+          const cond = (self.expanded) ? opacityConds && otherConds :
+                                         otherConds && opacityConds
 
-          console.info(`self: ${self}`)
-          console.info(`this: ${this}`)
+          if (cond) { return false }
 
           // NOTE: this is local this.
           this.removeEventListener('transitionend', onEndTransitionFn)

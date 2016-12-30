@@ -1,6 +1,6 @@
 import React   from 'react'
 import classie from 'classie'
-import initUIMorphingButton from './ui-morphing-button.config.js'
+import initUIMorphingButton from './lib/ui-morphing-button.config.js'
 
 import './FullPageMorphButton.css'
 
