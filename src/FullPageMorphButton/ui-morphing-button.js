@@ -12,9 +12,14 @@ const defaultOptions = {
 
 class UIMorphingButton {
   constructor(el, options) {
-    this.el = el
-    this.options = {...defaultOptions, ...options}
-    this._init()
+    this.el        = el
+    this.options   = {...defaultOptions, ...options}
+    this.expanded  = false
+
+    this.button    = this.el.querySelector('button')
+    this.contentEl = this.el.querySelector('.morph-content')
+
+    this._initEvents()
   }
 
 
@@ -22,13 +27,6 @@ class UIMorphingButton {
   // PRIVATE METHODS
   // ---
 
-
-  _init() {
-      this.expanded  = false
-      this.button    = this.el.querySelector('button')
-      this.contentEl = this.el.querySelector('.morph-content')
-      this._initEvents()
-  }
 
   _initEvents() {
 
@@ -89,6 +87,11 @@ class UIMorphingButton {
           if (self.expanded && ev.propertyName !== 'opacity' || !self.expanded && ev.propertyName !== 'width' && ev.propertyName !== 'height' && ev.propertyName !== 'left' && ev.propertyName !== 'top') {
               return false
           }
+
+          console.info(`self: ${self}`)
+          console.info(`this: ${this}`)
+
+          // NOTE: this is local this.
           this.removeEventListener('transitionend', onEndTransitionFn)
 
           self.isAnimating = false
@@ -109,6 +112,7 @@ class UIMorphingButton {
 
       // set the left and top values of the contentEl (same like the button)
       const buttonPos = this.button.getBoundingClientRect()
+
       // need to reset
       classie.addClass(this.contentEl, 'no-transition')
       this.contentEl.style.left = 'auto'
@@ -116,16 +120,16 @@ class UIMorphingButton {
 
       // add/remove class "open" to the button wraper
       setTimeout(() => {
-          self.contentEl.style.left = buttonPos.left + 'px'
-          self.contentEl.style.top = buttonPos.top + 'px'
+          this.contentEl.style.left = buttonPos.left + 'px'
+          this.contentEl.style.top = buttonPos.top + 'px'
 
-          if (self.expanded) {
-              classie.removeClass(self.contentEl, 'no-transition')
-              classie.removeClass(self.el, 'open')
+          if (this.expanded) {
+              classie.removeClass(this.contentEl, 'no-transition')
+              classie.removeClass(this.el, 'open')
           } else {
               setTimeout(() => {
-                  classie.removeClass(self.contentEl, 'no-transition')
-                  classie.addClass(self.el, 'open')
+                  classie.removeClass(this.contentEl, 'no-transition')
+                  classie.addClass(this.el, 'open')
               }, 25)
           }
       }, 25)
