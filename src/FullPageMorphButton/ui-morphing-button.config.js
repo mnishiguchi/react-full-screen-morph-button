@@ -1,70 +1,73 @@
 import classie          from 'classie'
-import UIMorphingButton from './ui-morphing-button'
+import UIMorphingButton from './lib/ui-morphing-button'
+
+let didScroll      = false
+let scrollPosition = { x: 0, y: 0 }
 
 function initUIMorphingButton() {
-  const docElem = window.document.documentElement
-  const el      = document.querySelector( '.morph-button' )
+  const rootEl    = window.document.documentElement
+  const wrapperEl = document.querySelector( '.morph-button' )
 
-  let didScroll
-  let scrollPosition
+  window.addEventListener( 'scroll', scrollHandler )
 
-  scrollFn()
+  new UIMorphingButton( wrapperEl, config() )
 
-  const opts = {
-    closeEl: '#close-button',
-    onBeforeOpen: () => {
-      noScroll()
-    },
-    onAfterOpen: () => {
-      canScroll()
-      classie.addClass( document.body, 'noscroll' )
-      classie.addClass( el, 'scroll' )
-    },
-    onBeforeClose: () => {
-      classie.removeClass( document.body, 'noscroll' )
-      classie.removeClass( el, 'scroll' )
-      noScroll()
-    },
-    onAfterClose: () => {
-      canScroll()
+  function config() {
+    return {
+      closeSelector: '#close-button',
+      onBeforeOpen: () => {
+        disableScrolling()
+      },
+      onAfterOpen: () => {
+        enableScrolling()
+        classie.addClass( document.body, 'noscroll' )
+        classie.addClass( wrapperEl, 'scroll' )
+      },
+      onBeforeClose: () => {
+        classie.removeClass( document.body, 'noscroll' )
+        classie.removeClass( wrapperEl, 'scroll' )
+        disableScrolling()
+      },
+      onAfterClose: () => {
+        enableScrolling()
+      }
     }
   }
 
-  new UIMorphingButton( el, opts )
-
   // Prevents scrolling when opening/closing button
-  function noScrollFn() {
-    window.scrollTo( scrollPosition ? scrollPosition.x : 0, scrollPosition ? scrollPosition.y : 0 )
+  function stayStill() {
+    window.scrollTo( scrollPosition.x,  scrollPosition.y )
   }
 
-  function noScroll() {
+  function disableScrolling() {
     window.removeEventListener( 'scroll', scrollHandler )
-    window.addEventListener( 'scroll', noScrollFn )
+    window.addEventListener( 'scroll', stayStill )
   }
 
-  function scrollFn() {
+  function enableScrolling() {
     window.addEventListener( 'scroll', scrollHandler )
   }
 
-  function canScroll() {
-    window.removeEventListener( 'scroll', noScrollFn )
-    scrollFn()
+  function enableScrolling() {
+    window.removeEventListener( 'scroll', stayStill )
+    window.addEventListener( 'scroll', scrollHandler )
   }
 
   function scrollHandler() {
     if( !didScroll ) {
       didScroll = true
-      setTimeout( function() { scrollPage() }, 60 )
+      setTimeout(() => {
+        rememberPosition()
+        didScroll = false
+      }, 60 )
     }
   }
 
-  function scrollPage() {
-    scrollPosition = {
-      x : window.pageXOffset || docElem.scrollLeft,
-      y : window.pageYOffset || docElem.scrollTop
-    }
-    didScroll = false
+  function rememberPosition() {
+    scrollPosition.x = window.pageXOffset || rootEl.scrollLeft
+    scrollPosition.y = window.pageYOffset || rootEl.scrollTop
   }
-}
+
+} // end
 
 export default initUIMorphingButton;

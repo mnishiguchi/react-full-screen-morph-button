@@ -3,7 +3,7 @@
 import classie from 'classie'
 
 const defaultOptions = {
-    closeEl      : '',
+    closeSelector: '',
     onBeforeOpen : () => { return false },
     onAfterOpen  : () => { return false },
     onBeforeClose: () => { return false },
@@ -11,15 +11,15 @@ const defaultOptions = {
 }
 
 class UIMorphingButton {
-  constructor(el, options) {
-    this.el        = el
+  constructor(wrapperEl, options) {
+    this.wrapperEl = wrapperEl
     this.options   = {...defaultOptions, ...options}
     this.expanded  = false
 
-    this.button    = this.el.querySelector('button')
-    this.contentEl = this.el.querySelector('.morph-content')
+    this.buttonEl  = this.wrapperEl.querySelector('button')
+    this.contentEl = this.wrapperEl.querySelector('.morph-content')
 
-    this._initEvents()
+    this._subscribeEventsForToggle()
   }
 
 
@@ -28,42 +28,22 @@ class UIMorphingButton {
   // ---
 
 
-  _initEvents() {
+  _subscribeEventsForToggle() {
 
       // open
-      this.button.addEventListener('click', () => {
-          this.toggle()
-      })
+      this.buttonEl.addEventListener('click', () => this._toggle() )
 
       // close
-      if (this.options.closeEl !== '') {
-          const closeEl = this.el.querySelector(this.options.closeEl)
+      if (this.options.closeSelector !== '') {
+          const closeEl = this.wrapperEl.querySelector(this.options.closeSelector)
           if (closeEl) {
-              closeEl.addEventListener('click', () => {
-                  this.toggle()
-              })
-          }
-      }
-
-      document.onkeydown = function(evt) {
-          evt = evt || window.event
-          if (this.options.closeEl !== '') {
-              const closeEl = this.el.querySelector(this.options.closeEl)
-
-              if (closeEl && this.expanded) {
-                  this.toggle()
-              }
+              closeEl.addEventListener('click', () => this._toggle() )
           }
       }
   }
 
-
-  // ---
-  // PUBLIC METHODS
-  // ---
-
-
-  toggle() {
+  // TODO: Understand this code
+  _toggle() {
       if (this.isAnimating) return false
 
       // callback
@@ -71,7 +51,7 @@ class UIMorphingButton {
           this.options.onBeforeClose()
       } else {
           // add class active (solves z-index problem when more than one button is in the page)
-          classie.addClass(this.el, 'active')
+          classie.addClass(this.wrapperEl, 'active')
           this.options.onBeforeOpen()
       }
 
@@ -82,14 +62,17 @@ class UIMorphingButton {
       const onEndTransitionFn = function(ev) {
           if (ev.target !== this) return false
 
-          // open: first opacity then width/height/left/top
+          // open:  first opacity then width/height/left/top
           // close: first width/height/left/top then opacity
-          if (self.expanded && ev.propertyName !== 'opacity' || !self.expanded && ev.propertyName !== 'width' && ev.propertyName !== 'height' && ev.propertyName !== 'left' && ev.propertyName !== 'top') {
-              return false
-          }
+          const opacityConds  = ev.propertyName !== 'opacity'
+          const otherConds    = (ev.propertyName !== 'width') &&
+                                (ev.propertyName !== 'height') &&
+                                (ev.propertyName !== 'left') &&
+                                (ev.propertyName !== 'top')
+          const cond = (self.expanded) ? opacityConds && otherConds :
+                                         otherConds && opacityConds
 
-          console.info(`self: ${self}`)
-          console.info(`this: ${this}`)
+          if (cond) { return false }
 
           // NOTE: this is local this.
           this.removeEventListener('transitionend', onEndTransitionFn)
@@ -99,7 +82,7 @@ class UIMorphingButton {
           // callback
           if (self.expanded) {
               // remove class active (after closing)
-              classie.removeClass(self.el, 'active')
+              classie.removeClass(self.wrapperEl, 'active')
               self.options.onAfterClose()
           } else {
               self.options.onAfterOpen()
@@ -111,7 +94,7 @@ class UIMorphingButton {
       this.contentEl.addEventListener('transitionend', onEndTransitionFn)
 
       // set the left and top values of the contentEl (same like the button)
-      const buttonPos = this.button.getBoundingClientRect()
+      const buttonPos = this.buttonEl.getBoundingClientRect()
 
       // need to reset
       classie.addClass(this.contentEl, 'no-transition')
@@ -125,11 +108,11 @@ class UIMorphingButton {
 
           if (this.expanded) {
               classie.removeClass(this.contentEl, 'no-transition')
-              classie.removeClass(this.el, 'open')
+              classie.removeClass(this.wrapperEl, 'open')
           } else {
               setTimeout(() => {
                   classie.removeClass(this.contentEl, 'no-transition')
-                  classie.addClass(this.el, 'open')
+                  classie.addClass(this.wrapperEl, 'open')
               }, 25)
           }
       }, 25)
