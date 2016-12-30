@@ -7,8 +7,10 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0-alpha.5",
     "classnames": "^2.2.5",
     "fbemitter": "^2.1.1",
+    "font-awesome": "^4.7.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   },

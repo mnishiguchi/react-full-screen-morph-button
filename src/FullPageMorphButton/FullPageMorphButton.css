@@ -18,7 +18,7 @@ Classes used for full-screen morph button
   position: relative;
   padding: 0 1em;
   border: none;
-  background-color: #e85657;
+  background-color: #56a0e8;
   color: #f9f6e5;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -116,7 +116,7 @@ Classes used for full-screen morph button
 
 .morph-button-overlay .morph-content {
   overflow: hidden;
-  background: #e85657;
+  background: #99c6f1;
 }
 
 .morph-button-overlay.open .morph-content {

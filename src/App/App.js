@@ -3,15 +3,16 @@ import { EventEmitter }     from 'fbemitter';
 
 import './App.css';
 
-import ProgressControl from '../ProgressControl/ProgressControl';
-import ProgressCircle  from '../ProgressCircle/ProgressCircle';
+import FullPageMorphButton from '../FullPageMorphButton/FullPageMorphButton';
+import ProgressControl     from '../ProgressControl/ProgressControl';
+import ProgressCircle      from '../ProgressCircle/ProgressCircle';
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      rating: 30
+      score: 77
     }
   }
 
@@ -26,14 +27,16 @@ class App extends Component {
 
         <div style={{ margin: '1.5rem 0' }}>
           <ProgressCircle
-            rating={this.state.rating}
+            score={this.state.score}
           />
           <br />
           <ProgressControl
-            rating={this.state.rating}
+            score={this.state.score}
             emitter={this._emitter}
           />
         </div>
+
+        <FullPageMorphButton />
       </div>
     );
   }
@@ -45,11 +48,11 @@ class App extends Component {
 
 
   componentWillMount() {
-    this._listenForChildren()
+    this._subscribeEvents()
   }
 
   componentWillUnmount() {
-    this._unlistenForChildren()
+    this._unsubscribeEvents()
   }
 
 
@@ -61,18 +64,18 @@ class App extends Component {
   /**
    * Sets up an emitter and listens for events from children.
    */
-  _listenForChildren() {
+  _subscribeEvents() {
     this._emitter = new EventEmitter()
 
-    this._emitter.addListener('PROGRESS_CONTROL_RATING_CHANGED', ({ rating }) => {
-      this.setState({rating})
+    this._emitter.addListener('PROGRESS_CONTROL_SCORE_CHANGED', ({ score }) => {
+      this.setState({ score })
     })
   }
 
   /**
    * Removes all the listeners that are registered on the emitter.
    */
-  _unlistenForChildren() {
+  _unsubscribeEvents() {
     this._emitter.removeAllListeners()
   }
 }

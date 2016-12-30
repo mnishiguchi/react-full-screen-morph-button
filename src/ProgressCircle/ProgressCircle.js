@@ -4,16 +4,17 @@ import classNames from 'classnames'
 import './ProgressCircle.css'
 
 const ProgressCircle = (props) => {
-  const { rating } = props
+  const { label, score, children } = props
 
   const progressClassName = classNames({
-    'rating-progress' : true,
-    'under-30'        : (rating <= 30),
-    'under-70'        : (rating <= 70 && rating > 30),
+    'rating-progress': true,
+    'under-50'       : (score <= 50),
+    'under-75'       : (score <= 75 && score > 50),
+    'over-75'        : (score > 75),
   })
 
   const progressStyle = {
-    strokeDashoffset: 100 - rating
+    strokeDashoffset: 100 - score
   }
 
   return (
@@ -29,8 +30,12 @@ const ProgressCircle = (props) => {
           style={progressStyle}
         />
       </svg>
-      <div className="ratingText">
-        {rating}
+      {children}
+      <div className="labelText">
+        <a href="#">{label || ""}</a>
+      </div>
+      <div className="scoreText">
+        {Number(score) || 0}
       </div>
     </div>
   )
