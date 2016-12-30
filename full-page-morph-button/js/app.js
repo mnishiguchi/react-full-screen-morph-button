@@ -37,7 +37,7 @@
   var el = document.querySelector( '.morph-button' );
 
   new UIMorphingButton( el, {
-    closeEl : '.icon-close',
+    closeEl : '.close-button',
     onBeforeOpen : function() {
       // don't allow to scroll
       noScroll();
