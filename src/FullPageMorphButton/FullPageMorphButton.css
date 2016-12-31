@@ -14,7 +14,7 @@ Classes used for full-screen morph button
     margin: 0 auto;
 }
 
-.morph-button>button {
+.morph-button > button {
     position: relative;
     padding: 0 1em;
     border: none;
@@ -27,7 +27,7 @@ Classes used for full-screen morph button
     overflow: hidden;
 }
 
-.morph-button.open>button {
+.morph-button.open > button {
     pointer-events: none;
 }
 
@@ -48,14 +48,14 @@ Classes used for full-screen morph button
     height: 80px;
 }
 
-.morph-button-fixed>button {
+.morph-button-fixed > button {
     z-index: 1000;
     width: 100%;
     height: 100%;
     transition: opacity 0.1s 0.5s;
 }
 
-.morph-button-fixed.open>button {
+.morph-button-fixed.open > button {
     opacity: 0;
     transition: opacity 0.1s;
 }
@@ -71,21 +71,21 @@ Classes used for full-screen morph button
     opacity: 1;
 }
 
-.morph-button-fixed .morph-content>div {
+.morph-button-fixed .morph-content > div {
     visibility: hidden;
     height: 0;
     opacity: 0;
     transition: opacity 0.1s, visibility 0s 0.1s, height 0s 0.1s;
 }
 
-.morph-button-fixed.open .morph-content>div {
+.morph-button-fixed.open .morph-content > div {
     visibility: visible;
     height: auto;
     opacity: 1;
     transition: opacity 0.3s 0.5s;
 }
 
-.morph-button-fixed.active>button {
+.morph-button-fixed.active > button {
     z-index: 2000;
 }
 
@@ -145,7 +145,7 @@ Classes used for full-screen morph button
 
 /* No JS fallback: let's hide the button and show the content */
 
-.no-js .morph-button>button {
+.no-js .morph-button > button {
     display: none;
 }
 
@@ -156,7 +156,7 @@ Classes used for full-screen morph button
 
 .no-js .morph-button,
 .no-js .morph-button .morph-content,
-.no-js .morph-button .morph-content>div {
+.no-js .morph-button .morph-content > div {
     position: relative;
     width: auto;
     height: auto;
@@ -197,7 +197,7 @@ Classes used for full-screen morph button
         width: 200px;
         height: 80px;
     }
-    .morph-button-fixed>button {
+    .morph-button-fixed > button {
         font-size: 75%;
     }
 }
