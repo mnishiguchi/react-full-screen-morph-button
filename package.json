@@ -7,6 +7,7 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
+    "Faker": "^0.7.2",
     "bootstrap": "^4.0.0-alpha.5",
     "classnames": "^2.2.5",
     "fbemitter": "^2.1.1",
