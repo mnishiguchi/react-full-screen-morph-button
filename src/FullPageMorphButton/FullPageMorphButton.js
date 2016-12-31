@@ -1,9 +1,17 @@
-import React   from 'react'
-import initUIMorphingButton from './ui-morphing-button.config.js'
+import React from 'react'
+import classie from 'classie'
+import UIMorphingButton from './lib/ui-morphing-button'
 
 import './FullPageMorphButton.css'
 
 class FullPageMorphButton extends React.Component {
+  
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+  }
+
   render() {
     return (
       <div className="morph-button morph-button-overlay morph-button-fixed">
@@ -24,7 +32,7 @@ class FullPageMorphButton extends React.Component {
 
 
   componentDidMount() {
-    initUIMorphingButton()
+    this._initUIMorphingButton()
   }
 
   componentWillUnmount() {
@@ -36,6 +44,25 @@ class FullPageMorphButton extends React.Component {
   // ---
 
 
-}
+  _initUIMorphingButton() {
+    const wrapperEl = document.querySelector( '.morph-button' )
+    const config = {
+      closeSelector: '#close-button',
+      onBeforeOpen: () => {},
+      onAfterOpen: () => {
+        classie.addClass( document.body, 'noscroll' )
+        classie.addClass( wrapperEl, 'scroll' )
+      },
+      onBeforeClose: () => {
+        classie.removeClass( document.body, 'noscroll' )
+        classie.removeClass( wrapperEl, 'scroll' )
+      },
+      onAfterClose: () => {}
+    }
+
+    new UIMorphingButton( wrapperEl, config )
+  }
+
+} // end class
 
 export default FullPageMorphButton
