@@ -54,8 +54,6 @@ class FullPageMorphButton extends React.Component {
   }
 
   componentDidMount() {
-    // this._initUIMorphingButton()
-
     this._buttonEl  = document.querySelector('.FullPageMorphButton .openButton')
     this._contentEl = document.querySelector('.FullPageMorphButton .MorphContent')
   }
@@ -71,7 +69,7 @@ class FullPageMorphButton extends React.Component {
 
 
   // ---
-  // PRIVATE METHODS
+  // SUBSCRIPTION
   // ---
 
 
@@ -82,7 +80,7 @@ class FullPageMorphButton extends React.Component {
     this._emitter = new EventEmitter()
 
     this._emitter.addListener('MORPH_CONTENT_CLOSE_BUTTON_CLICKED', payload => {
-      console.log(`MORPH_CONTENT_CLOSE_BUTTON_CLICKED`)
+      console.log(payload.e.target)
       this._handleCloseButtonClick()
     })
   }
@@ -95,19 +93,15 @@ class FullPageMorphButton extends React.Component {
   }
 
 
-  // _initUIMorphingButton() {
-  //   const wrapperEl = document.querySelector( '.FullPageMorphButton' )
-  //   const config = {
-  //     closeSelector: '#close-button',
-  //     onAfterOpen  : () => { classie.addClass( wrapperEl, 'scroll' ) },
-  //   }
-  //
-  //   new UIMorphingButton( wrapperEl, config )
-  // }
+  // ---
+  // PRIVATE METHODS
+  // ---
 
 
-  // TODO
-  //
+  /**
+  * TODO
+   * Handles the closing morph.
+   */
   _handleCloseButtonClick(event) {
     this.setState({ isAnimating: true })
 
@@ -123,6 +117,9 @@ class FullPageMorphButton extends React.Component {
     this.setState({ isExpanded: false, isAnimating: false })
   }
 
+  /**
+   * Handles the opening morph.
+   */
   _handleOpenButtonClick(event) {
     console.log(event.target)
     this.setState({ isAnimating: true })
@@ -141,6 +138,9 @@ class FullPageMorphButton extends React.Component {
     }, 25)
   }
 
+  /**
+   * Pass the specified props to the children.
+   */
   _renderChildrenWithProps() {
     const { children } = this.props
 
