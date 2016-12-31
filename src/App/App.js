@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Faker                from 'Faker'
 
-import FullPageMorphButton from '../FullPageMorphButton/FullPageMorphButton'
+import FullScreenMorph from '../FullScreenMorph/FullScreenMorph'
 
 import './App.css'
 
@@ -16,11 +16,14 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2 className="h4">
-            <a href="https://github.com/mnishiguchi/react-full-screen-morph-button">
+          <h1 className="h4">
+            <a
+              href="https://github.com/mnishiguchi/react-full-screen-morph-button"
+              style={{color: '#e7e8f4'}}
+            >
               React Full-screen Morph Button
             </a>
-          </h2>
+          </h1>
         </div>
 
         <div
@@ -30,12 +33,12 @@ class App extends Component {
 
           <p>{Faker.Lorem.paragraphs()}</p>
 
-          <FullPageMorphButton
+          <FullScreenMorph
             openButtonText="More info"
             closeButtonText="Close"
           >
             {this._renderMorphContent()}
-          </FullPageMorphButton>
+          </FullScreenMorph>
 
           <p>{Faker.Lorem.paragraphs()}</p>
           <p>{Faker.Lorem.paragraphs()}</p>
@@ -55,9 +58,13 @@ class App extends Component {
   _renderMorphContent() {
     return (
       <div>
-        <h2>
+        <h2 className="h3" style={{padding: '1rem 0 1.5rem 0'}}>
           Masatoshi Nishiguchi
         </h2>
+
+        <img src="http://placehold.jp/7b81c3/ffffff/300x200.png" />
+
+        <div className="py-1"></div>
 
         <p>{Faker.Lorem.paragraphs()}</p>
         <p>{Faker.Lorem.paragraphs()}</p>
