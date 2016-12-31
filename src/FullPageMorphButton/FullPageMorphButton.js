@@ -14,9 +14,12 @@ class FullPageMorphButton extends React.Component {
 
   render() {
     return (
-      <div className="morph-button morph-button-overlay morph-button-fixed">
+      <div className="FullPageMorphButton">
 
-        <button type="button">
+        <button
+          type="button"
+          className="openButton"
+          >
           {this.props.buttonText}
         </button>
 
@@ -45,7 +48,7 @@ class FullPageMorphButton extends React.Component {
 
 
   _initUIMorphingButton() {
-    const wrapperEl = document.querySelector( '.morph-button' )
+    const wrapperEl = document.querySelector( '.FullPageMorphButton' )
     const config = {
       closeSelector: '#close-button',
       onAfterOpen: () => { classie.addClass( wrapperEl, 'scroll' ) },

@@ -39,6 +39,7 @@ class App extends Component {
             score={this.state.score}
             emitter={this._emitter}
           />
+          
           <FullPageMorphButton
             buttonText="More info"
             >
