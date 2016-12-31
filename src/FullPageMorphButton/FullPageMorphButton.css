@@ -16,7 +16,7 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 
 .FullPageMorphButton,
 .FullPageMorphButton > button,
-.FullPageMorphButton .morph-content {
+.FullPageMorphButton .MorphContent {
     width: 300px;
     height: 80px;
 }
@@ -48,7 +48,7 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 
 /* content */
 
-.FullPageMorphButton .morph-content {
+.FullPageMorphButton .MorphContent {
     overflow: hidden;
     background: #99c6f1;
     pointer-events: none;
@@ -58,7 +58,7 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
     transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
 }
 
-.FullPageMorphButton.open .morph-content {
+.FullPageMorphButton.open .MorphContent {
     top: 0 !important;
     left: 0 !important;
     width: 100%;
@@ -71,14 +71,14 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 
 /* content inner */
 
-.FullPageMorphButton .morph-content > div {
+.FullPageMorphButton .MorphContent > div {
     visibility: hidden;
     height: 0;
     opacity: 0;
     transition: opacity 0.1s, visibility 0s 0.1s, height 0s 0.1s;
 }
 
-.FullPageMorphButton.open .morph-content > div {
+.FullPageMorphButton.open .MorphContent > div {
     visibility: visible;
     height: auto;
     opacity: 1;
@@ -88,8 +88,8 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 
 /* Easing for the content */
 
-.FullPageMorphButton .morph-content,
-.FullPageMorphButton.open .morph-content {
+.FullPageMorphButton .MorphContent,
+.FullPageMorphButton.open .MorphContent {
     transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
 }
 
@@ -100,7 +100,7 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
     overflow: hidden;
 }
 
-.FullPageMorphButton.scroll .morph-content {
+.FullPageMorphButton.scroll .MorphContent {
     overflow-y: scroll;
 }
 
@@ -117,8 +117,8 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 }
 
 .no-js .FullPageMorphButton,
-.no-js .FullPageMorphButton .morph-content,
-.no-js .FullPageMorphButton .morph-content > div {
+.no-js .FullPageMorphButton .MorphContent,
+.no-js .FullPageMorphButton .MorphContent > div {
     position: relative;
     width: auto;
     height: auto;

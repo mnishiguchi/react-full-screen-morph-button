@@ -17,7 +17,7 @@ class UIMorphingButton {
     this.expanded  = false
 
     this.buttonEl  = this.wrapperEl.querySelector('.openButton')
-    this.contentEl = this.wrapperEl.querySelector('.morph-content')
+    this.contentEl = this.wrapperEl.querySelector('.MorphContent')
 
     this._subscribeEventsForToggle()
   }

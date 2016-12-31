@@ -23,6 +23,8 @@ class FullPageMorphButton extends React.Component {
       'open scroll'         : this.state.isExpanded,
     })
 
+    const { openButtonText } = this.props
+
     return (
       <div className={FullPageMorphButtonClassName}>
 
@@ -31,10 +33,10 @@ class FullPageMorphButton extends React.Component {
           className="openButton"
           onClick={e => this._handleOpenButtonClick(e)}
         >
-          {this.props.buttonText}
+          {openButtonText}
         </button>
 
-        {this.props.children}
+        {this._renderChildrenWithProps()}
       </div>
     )
   }
@@ -49,7 +51,7 @@ class FullPageMorphButton extends React.Component {
     // this._initUIMorphingButton()
 
     this._buttonEl  = document.querySelector('.FullPageMorphButton .openButton')
-    this._contentEl = document.querySelector('.FullPageMorphButton .morph-content')
+    this._contentEl = document.querySelector('.FullPageMorphButton .MorphContent')
   }
 
 
@@ -74,6 +76,14 @@ class FullPageMorphButton extends React.Component {
     new UIMorphingButton( wrapperEl, config )
   }
 
+  // TODO
+  //
+  _handleCloseButtonClick(event) {
+    console.log(event.target)
+
+    
+  }
+
   _handleOpenButtonClick(event) {
     console.log(event.target)
     this.setState({ isAnimating: true })
@@ -90,6 +100,16 @@ class FullPageMorphButton extends React.Component {
         classie.removeClass(this._contentEl, 'no-transition')
         this.setState({ isExpanded: true, isAnimating: false })
     }, 25)
+  }
+
+  _renderChildrenWithProps() {
+    const { children } = this.props
+
+    const propsForChildren = {
+      handleCloseButtonClick: this._handleCloseButtonClick
+    }
+
+    return children ? React.cloneElement(children, propsForChildren) : null
   }
 
 } // end class
