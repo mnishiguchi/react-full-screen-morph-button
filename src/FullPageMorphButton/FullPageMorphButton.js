@@ -1,6 +1,7 @@
-import React from 'react'
-import classie from 'classie'
-import classNames from 'classnames'
+import React            from 'react'
+import classie          from 'classie'
+import classNames       from 'classnames'
+import { EventEmitter } from 'fbemitter';
 import UIMorphingButton from '../lib/ui-morphing-button'
 
 import './FullPageMorphButton.css'
@@ -47,6 +48,11 @@ class FullPageMorphButton extends React.Component {
   // ---
 
 
+  componentWillMount() {
+    // Register and listen for our custom events that will be emitted by children.
+    this._subscribeEvents()
+  }
+
   componentDidMount() {
     // this._initUIMorphingButton()
 
@@ -54,6 +60,9 @@ class FullPageMorphButton extends React.Component {
     this._contentEl = document.querySelector('.FullPageMorphButton .MorphContent')
   }
 
+  componentWillUnmount() {
+    this._unsubscribeEvents()
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     // No updating after animation
@@ -66,22 +75,52 @@ class FullPageMorphButton extends React.Component {
   // ---
 
 
-  _initUIMorphingButton() {
-    const wrapperEl = document.querySelector( '.FullPageMorphButton' )
-    const config = {
-      closeSelector: '#close-button',
-      onAfterOpen  : () => { classie.addClass( wrapperEl, 'scroll' ) },
-    }
+  /**
+   * Sets up an emitter and listens for events from children.
+   */
+  _subscribeEvents() {
+    this._emitter = new EventEmitter()
 
-    new UIMorphingButton( wrapperEl, config )
+    this._emitter.addListener('MORPH_CONTENT_CLOSE_BUTTON_CLICKED', payload => {
+      console.log(`MORPH_CONTENT_CLOSE_BUTTON_CLICKED`)
+      this._handleCloseButtonClick()
+    })
   }
+
+  /**
+   * Removes all the listeners that are registered on the emitter.
+   */
+  _unsubscribeEvents() {
+    this._emitter.removeAllListeners()
+  }
+
+
+  // _initUIMorphingButton() {
+  //   const wrapperEl = document.querySelector( '.FullPageMorphButton' )
+  //   const config = {
+  //     closeSelector: '#close-button',
+  //     onAfterOpen  : () => { classie.addClass( wrapperEl, 'scroll' ) },
+  //   }
+  //
+  //   new UIMorphingButton( wrapperEl, config )
+  // }
+
 
   // TODO
   //
   _handleCloseButtonClick(event) {
-    console.log(event.target)
+    this.setState({ isAnimating: true })
 
-    
+    // Disable the transition initially.
+    classie.addClass(this._contentEl, 'no-transition')
+
+    // // Align the content to the button.
+    // const bottonPosition  = this._buttonEl.getBoundingClientRect()
+    // this._contentEl.style.top  = `${bottonPosition.top}px`
+    // this._contentEl.style.left = `${bottonPosition.left}px`
+
+    classie.removeClass(this._contentEl, 'no-transition')
+    this.setState({ isExpanded: false, isAnimating: false })
   }
 
   _handleOpenButtonClick(event) {
@@ -106,7 +145,7 @@ class FullPageMorphButton extends React.Component {
     const { children } = this.props
 
     const propsForChildren = {
-      handleCloseButtonClick: this._handleCloseButtonClick
+      emitter: this._emitter
     }
 
     return children ? React.cloneElement(children, propsForChildren) : null

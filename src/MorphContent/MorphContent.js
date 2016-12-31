@@ -1,7 +1,7 @@
 import React from 'react'
 
 const MorphContent = (props) => {
-  const { closeButtonText, handleCloseButtonClick, children } = props
+  const { closeButtonText, emitter, children } = props
 
   return (
     <div
@@ -14,7 +14,7 @@ const MorphContent = (props) => {
 
           <div
             className="closeButton btn btn-secondary"
-            onClick={e => handleCloseButtonClick(e)}
+            onClick={e => emitter.emit('MORPH_CONTENT_CLOSE_BUTTON_CLICKED', { e })}
           >
             {closeButtonText}
           </div>
