@@ -1,8 +1,6 @@
 import React            from 'react'
 import classie          from 'classie'
 import classNames       from 'classnames'
-import { EventEmitter } from 'fbemitter';
-import UIMorphingButton from '../lib/ui-morphing-button'
 
 import './FullPageMorphButton.css'
 
@@ -12,32 +10,59 @@ class FullPageMorphButton extends React.Component {
     super(props)
 
     this.state = {
-      isExpanded : false,
-      isAnimating: false,
+      isExpanded  : false,
+      isAnimating : false,
+      scrollTop   : null,
     }
   }
 
   render() {
     const FullPageMorphButtonClassName = classNames({
-      'FullPageMorphButton' : true,
-      'open'                : !this.state.isExpanded && this.state.isAnimating,
-      'open scroll'         : this.state.isExpanded,
+      'FullPageMorphButton scroll' : true,
+      'open'                       : this.state.isExpanded,
     })
 
-    const { openButtonText } = this.props
+    const {
+      openButtonText,
+      closeButtonText,
+      children
+    } = this.props
+
+    const openButton = (
+      <button
+        type="button"
+        className="openButton"
+        ref={node => this._openButtonNode = node}
+        onClick={e => this._handleOpen(e)}
+      >
+        {openButtonText}
+      </button>
+    )
+
+    const closeButton = (
+      <div
+        className="closeButton btn btn-secondary"
+        onClick={e => this._handleClose(e)}
+        style={{position: 'fixed', bottom: '1rem', right: '1rem'}}
+      >
+        {closeButtonText}
+      </div>
+    )
 
     return (
       <div className={FullPageMorphButtonClassName}>
 
-        <button
-          type="button"
-          className="openButton"
-          onClick={e => this._handleOpenButtonClick(e)}
-        >
-          {openButtonText}
-        </button>
+        {openButton}
 
-        {this._renderChildrenWithProps()}
+        <div
+          className="MorphContent"
+          style={{padding: '2rem 0'}}
+          ref={node => this._contentNode = node}
+        >
+          <div className="container">
+            {children} {closeButton}
+          </div>
+        </div>
       </div>
     )
   }
@@ -48,48 +73,8 @@ class FullPageMorphButton extends React.Component {
   // ---
 
 
-  componentWillMount() {
-    // Register and listen for our custom events that will be emitted by children.
-    this._subscribeEvents()
-  }
-
-  componentDidMount() {
-    this._buttonEl  = document.querySelector('.FullPageMorphButton .openButton')
-    this._contentEl = document.querySelector('.FullPageMorphButton .MorphContent')
-  }
-
-  componentWillUnmount() {
-    this._unsubscribeEvents()
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
-    // No updating after animation
-    return nextState.isExpanded && !nextState.isAnimating
-  }
-
-
-  // ---
-  // SUBSCRIPTION
-  // ---
-
-
-  /**
-   * Sets up an emitter and listens for events from children.
-   */
-  _subscribeEvents() {
-    this._emitter = new EventEmitter()
-
-    this._emitter.addListener('MORPH_CONTENT_CLOSE_BUTTON_CLICKED', payload => {
-      console.log(payload.e.target)
-      this._handleCloseButtonClick()
-    })
-  }
-
-  /**
-   * Removes all the listeners that are registered on the emitter.
-   */
-  _unsubscribeEvents() {
-    this._emitter.removeAllListeners()
+    return !nextProps.isAnimating
   }
 
 
@@ -99,58 +84,55 @@ class FullPageMorphButton extends React.Component {
 
 
   /**
-  * TODO
    * Handles the closing morph.
    */
-  _handleCloseButtonClick(event) {
-    this.setState({ isAnimating: true })
+  _handleClose(event) {
+    this.setState({ isAnimating: true }, () => {
 
-    // Disable the transition initially.
-    classie.addClass(this._contentEl, 'no-transition')
+      // Disable the transition initially.
+      classie.addClass(this._contentNode, 'no-transition')
 
-    // // Align the content to the button.
-    // const bottonPosition  = this._buttonEl.getBoundingClientRect()
-    // this._contentEl.style.top  = `${bottonPosition.top}px`
-    // this._contentEl.style.left = `${bottonPosition.left}px`
+      this._alignContentToOpenButton()
 
-    classie.removeClass(this._contentEl, 'no-transition')
-    this.setState({ isExpanded: false, isAnimating: false })
+      setTimeout(() => {
+        classie.removeClass(this._contentNode, 'no-transition')
+        this.setState({
+          isExpanded: false,
+          isAnimating: false
+        })
+      }, 25)
+    })
   }
 
   /**
    * Handles the opening morph.
    */
-  _handleOpenButtonClick(event) {
+  _handleOpen(event) {
     console.log(event.target)
-    this.setState({ isAnimating: true })
+    this.setState({ isAnimating: true }, () => {
 
-    // Disable the transition initially.
-    classie.addClass(this._contentEl, 'no-transition')
+      // Disable the transition initially.
+      classie.addClass(this._contentNode, 'no-transition')
 
-    // Align the content to the button.
-    const bottonPosition  = this._buttonEl.getBoundingClientRect()
-    this._contentEl.style.top  = `${bottonPosition.top}px`
-    this._contentEl.style.left = `${bottonPosition.left}px`
+      this._alignContentToOpenButton()
 
-    setTimeout(() => {
-        classie.removeClass(this._contentEl, 'no-transition')
-        this.setState({ isExpanded: true, isAnimating: false })
-    }, 25)
+      setTimeout(() => {
+        classie.removeClass(this._contentNode, 'no-transition')
+        this.setState({
+          isExpanded : true,
+          isAnimating: false,
+          scrollTop  : document.body.scrollTop
+        })
+      }, 25)
+    })
+
   }
 
-  /**
-   * Pass the specified props to the children.
-   */
-  _renderChildrenWithProps() {
-    const { children } = this.props
-
-    const propsForChildren = {
-      emitter: this._emitter
-    }
-
-    return children ? React.cloneElement(children, propsForChildren) : null
+  _alignContentToOpenButton() {
+    const bottonPosition  = this._openButtonNode.getBoundingClientRect()
+    this._contentNode.style.top  = `${bottonPosition.top}px`
+    this._contentNode.style.left = `${bottonPosition.left}px`
   }
-
 } // end class
 
 export default FullPageMorphButton

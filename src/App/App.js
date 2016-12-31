@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { EventEmitter }     from 'fbemitter'
 import Faker                from 'Faker'
 
 import FullPageMorphButton from '../FullPageMorphButton/FullPageMorphButton'
-import MorphContent        from '../MorphContent/MorphContent'
 
 import './App.css'
 
@@ -11,9 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      score: 77
-    }
+    this.state = {}
   }
 
   render() {
@@ -36,16 +32,14 @@ class App extends Component {
 
           <FullPageMorphButton
             openButtonText="More info"
+            closeButtonText="Close"
           >
-              <MorphContent
-                handleCloseButtonClick={this.props.handleCloseButtonClick}
-                closeButtonText="Close"
-              >
-                {this._renderMorphContent()}
-              </MorphContent>
-            </FullPageMorphButton>
+            {this._renderMorphContent()}
+          </FullPageMorphButton>
 
-            <p>{Faker.Lorem.paragraphs()}</p>
+          <p>{Faker.Lorem.paragraphs()}</p>
+          <p>{Faker.Lorem.paragraphs()}</p>
+          <p>{Faker.Lorem.paragraphs()}</p>
         </div>
 
       </div>

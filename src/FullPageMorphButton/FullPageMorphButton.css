@@ -68,6 +68,9 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
     transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
 }
 
+.FullPageMorphButton.scroll .MorphContent {
+    overflow-y: scroll;
+}
 
 /* content inner */
 
@@ -94,14 +97,14 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
 }
 
 
-/* Scroll helpers */
+/* Helpers */
+
+.no-transition {
+    transition: none !important;
+}
 
 .noscroll {
     overflow: hidden;
-}
-
-.FullPageMorphButton.scroll .MorphContent {
-    overflow-y: scroll;
 }
 
 
@@ -128,8 +131,4 @@ Ideas adopted from: https://github.com/codrops/ButtonComponentMorph/
     left: auto;
     transform: none;
     pointer-events: auto;
-}
-
-.no-transition {
-    transition: none !important;
 }
