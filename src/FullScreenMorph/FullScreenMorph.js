@@ -48,7 +48,10 @@ class FullScreenMorph extends React.Component {
     )
 
     return (
-      <div className={FullScreenMorphClassName}>
+      <div
+        className={FullScreenMorphClassName}
+        ref={node => this._wrapperNode = node}
+      >
 
         {openButton}
 
@@ -71,8 +74,12 @@ class FullScreenMorph extends React.Component {
   // ---
 
 
+  componentDidMount() {
+    this._setInitialDimensions()
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
-    return !nextProps.isAnimating
+    return true
   }
 
 
@@ -128,6 +135,26 @@ class FullScreenMorph extends React.Component {
         classie.addClass(document.body, 'noscroll')
       })
     }, 25)
+  }
+
+  /**
+   * Sets initial dimensions if specified with props.
+   */
+  _setInitialDimensions() {
+    const { width, height } = this.props
+
+    if (!width || !height) {
+      console.info("Default dimensions are applied because you did not specify dimensions")
+    }
+
+    this._wrapperNode.style.width = `${width}px`
+    this._wrapperNode.style.height = `${height}px`
+
+    this._contentNode.style.width = `${width}px`
+    this._contentNode.style.height = `${height}px`
+
+    this._openButtonNode.style.width = `${width}px`
+    this._openButtonNode.style.height = `${height}px`
   }
 
 } // end class

@@ -62,7 +62,7 @@ class App extends Component {
           Masatoshi Nishiguchi
         </h2>
 
-        <img src="http://placehold.jp/7b81c3/ffffff/300x200.png" />
+        <img src="http://placehold.jp/7b81c3/ffffff/300x200.png" alt="placeholder" />
 
         <div className="py-1"></div>
 
