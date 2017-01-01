@@ -1,9 +1,48 @@
-import React      from 'react'
-import classNames from 'classnames'
+import React, { PropTypes as T } from 'react'
+import classNames                from 'classnames'
 
 import './FullScreenMorph.css'
 
 class FullScreenMorph extends React.Component {
+
+  // https://facebook.github.io/react/docs/typechecking-with-proptypes.html
+  static propTypes = {
+    width            : T.number,
+    height           : T.number,
+    openButtonText   : T.string,
+    closeButtonText  : T.string,
+    wrapperStyle     : T.object,
+    openButtonStyle  : T.object,
+    closeButtonStyle : T.object,
+    contentStyle     : T.object,
+    children         : T.node
+  }
+
+  static defaultProps = {
+    width          : 300,
+    height         : 80,
+    openButtonText : 'More info',
+    closeButtonText: 'Close',
+    wrapperStyle: {
+        margin: '2rem auto'
+    },
+    openButtonStyle: {
+        background   : '#56a0e8',
+        color        : '#f9f6e5',
+        padding      : '0 1em',
+        border       : 'none',
+        textTransform: 'uppercase',
+        letterSpacing: '1px',
+        fontWeight   : '700',
+        lineHeight   : '80px',
+    },
+    closeButtonStyle: {
+        position: 'fixed', bottom: '1rem', right: '1rem'
+    },
+    contentStyle: {
+        background: '#99c6f1'
+    },
+  }
 
   constructor(props) {
     super(props)
@@ -22,6 +61,10 @@ class FullScreenMorph extends React.Component {
     const {
       openButtonText,
       closeButtonText,
+      wrapperStyle,
+      openButtonStyle,
+      closeButtonStyle,
+      contentStyle,
       children
     } = this.props
 
@@ -31,6 +74,7 @@ class FullScreenMorph extends React.Component {
         className="openButton"
         ref={node => this._openButtonNode = node}
         onClick={e => this._handleOpen(e)}
+        style={openButtonStyle}
       >
         {openButtonText}
       </button>
@@ -40,7 +84,7 @@ class FullScreenMorph extends React.Component {
       <div
         className="closeButton btn btn-secondary"
         onClick={e => this._handleClose(e)}
-        style={{position: 'fixed', bottom: '1rem', right: '1rem'}}
+        style={closeButtonStyle}
       >
         {closeButtonText}
       </div>
@@ -50,14 +94,15 @@ class FullScreenMorph extends React.Component {
       <div
         className={FullScreenMorphClassName}
         ref={node => this._wrapperNode = node}
+        style={wrapperStyle}
       >
 
         {openButton}
 
         <div
           className="MorphContent"
-          style={{padding: '2rem 0'}}
           ref={node => this._contentNode = node}
+          style={contentStyle}
         >
           <div className="container">
             {children}

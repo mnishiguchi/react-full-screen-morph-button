@@ -8,12 +8,12 @@ by Codrops.
 
 ## Usage
 
-```
+```js
 <FullScreenMorph
   openButtonText="More info"
   closeButtonText="Close"
-  width="300"
-  height="200"
+  width={300}
+  height={80}
 >
   <h2>
     Some title
@@ -25,7 +25,31 @@ by Codrops.
 </FullScreenMorph>
 ```
 
-## Things I learned
+#### props
+
+```
+width            : T.number,
+height           : T.number,
+openButtonText   : T.string,
+closeButtonText  : T.string,
+wrapperStyle     : T.object,
+openButtonStyle  : T.object,
+closeButtonStyle : T.object,
+contentStyle     : T.object,
+```
+
+
+## Starting this demo app locally
+
+```
+git clone git@github.com:mnishiguchi/react-full-screen-morph-button.git
+cd react-full-screen-morph-button
+npm install
+npm start
+```
+
+
+## Some techniques I used
 
 - [Prevent body scrolling but allow overlay scrolling](http://stackoverflow.com/a/9280412/3837223)
 - [http://youmightnotneedjquery.com/](http://youmightnotneedjquery.com/)

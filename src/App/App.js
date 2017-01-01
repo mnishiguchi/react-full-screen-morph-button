@@ -27,10 +27,7 @@ class App extends Component {
 
           <p>{Faker.Lorem.paragraphs()}</p>
 
-          <FullScreenMorph
-            openButtonText="More info"
-            closeButtonText="Close"
-          >
+          <FullScreenMorph>
             {this._renderMorphContent()}
           </FullScreenMorph>
 
