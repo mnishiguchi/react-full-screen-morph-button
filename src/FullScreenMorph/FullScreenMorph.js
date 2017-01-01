@@ -1,5 +1,4 @@
 import React      from 'react'
-import classie    from 'classie'
 import classNames from 'classnames'
 
 import './FullScreenMorph.css'
@@ -10,7 +9,7 @@ class FullScreenMorph extends React.Component {
     super(props)
 
     this.state = {
-      isExpanded  : false,
+      isExpanded: false,
     }
   }
 
@@ -61,7 +60,8 @@ class FullScreenMorph extends React.Component {
           ref={node => this._contentNode = node}
         >
           <div className="container">
-            {children} {closeButton}
+            {children}
+            {closeButton}
           </div>
         </div>
       </div>
@@ -76,10 +76,6 @@ class FullScreenMorph extends React.Component {
 
   componentDidMount() {
     this._setInitialDimensions()
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return true
   }
 
 
@@ -99,40 +95,34 @@ class FullScreenMorph extends React.Component {
 
   /**
    * Handles the closing morph.
+   * NOTE: We disable transition initially so that we can position the content
+   * at a correct place before starting the animation.
    */
   _handleClose(event) {
-    // Disable the transition initially.
-    classie.addClass(this._contentNode, 'no-transition')
-
+    this._contentNode.classList.add('no-transition')
     this._alignMorphContentToOpenButton()
 
     setTimeout(() => {
-      classie.removeClass(this._contentNode, 'no-transition')
-      this.setState({
-        isExpanded: false
-      }, () => {
-        classie.removeClass(document.body, 'noscroll')
+      this._contentNode.classList.remove('no-transition')
+      this.setState({ isExpanded: false }, () => {
+        document.body.classList.remove('noscroll')
       })
     }, 25)
   }
 
   /**
    * Handles the opening morph.
+   * NOTE: We disable transition initially so that we can position the content
+   * at a correct place before starting the animation.
    */
   _handleOpen(event) {
-    console.log(event.target)
-
-    // Disable the transition initially.
-    classie.addClass(this._contentNode, 'no-transition')
-
+    this._contentNode.classList.add('no-transition')
     this._alignMorphContentToOpenButton()
 
     setTimeout(() => {
-      classie.removeClass(this._contentNode, 'no-transition')
-      this.setState({
-        isExpanded : true,
-      }, () => {
-        classie.addClass(document.body, 'noscroll')
+      this._contentNode.classList.remove('no-transition')
+      this.setState({ isExpanded: true }, () => {
+        document.body.classList.add('noscroll')
       })
     }, 25)
   }
@@ -147,13 +137,13 @@ class FullScreenMorph extends React.Component {
       console.info("Default dimensions are applied because you did not specify dimensions")
     }
 
-    this._wrapperNode.style.width = `${width}px`
+    this._wrapperNode.style.width  = `${width}px`
     this._wrapperNode.style.height = `${height}px`
 
-    this._contentNode.style.width = `${width}px`
+    this._contentNode.style.width  = `${width}px`
     this._contentNode.style.height = `${height}px`
 
-    this._openButtonNode.style.width = `${width}px`
+    this._openButtonNode.style.width  = `${width}px`
     this._openButtonNode.style.height = `${height}px`
   }
 

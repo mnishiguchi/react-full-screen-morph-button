@@ -7,7 +7,7 @@ Ideas are heavily adopted from: https://github.com/codrops/ButtonComponentMorph/
 .FullScreenMorph {
     position: relative;
     display: block;
-    margin: 50px auto;
+    margin: 2rem auto;
 }
 
 
