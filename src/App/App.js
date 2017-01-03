@@ -3,13 +3,18 @@ import Faker                from 'Faker'
 
 import FullScreenMorph from '../FullScreenMorph/FullScreenMorph'
 
-import './App.css'
-
 class App extends Component {
   render() {
+    const headerStyle = {
+      background: '#222',
+      height    : 'auto',
+      padding   : '25px 0 20px 0',
+      color     : 'white',
+    }
+    
     return (
-      <div className="App">
-        <div className="App-header">
+      <div className="App" style={{textAlign: 'center'}}>
+        <div style={headerStyle}>
           <h1 className="h4">
             <a
               href="https://github.com/mnishiguchi/react-full-screen-morph-button"
